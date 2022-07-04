@@ -1,0 +1,76 @@
+function createBookShop(inventory) {
+  return {
+  	inventory: inventory,
+    inventoryValue: function() {
+      return this.inventory.reduce((total, book) => total += book.price, 0);
+    },
+    priceForTitle: function(title) {
+      return this.inventory.find(book => book.title === title).price;
+    }
+  };
+}
+
+// Improvements
+function createBookShop(inventory) {
+  return {
+  	inventory, // 1st, if the key value is the same exact name we can write it only one time
+    inventoryValue()  { // 2nd, if the key value is key-function we can replace : and keyword 'function'
+      return this.inventory.reduce((total, book) => total += book.price, 0);
+    },
+    priceForTitle(title) { // 3nd
+      return this.inventory.find(book => book.title === title).price;
+    }
+  };
+}
+
+const inventory = [
+  { title: 'Harry Potter', price: 10 },
+  { title: 'Eloquent Javascript', price: 15 }
+];
+
+const bookShop = createBookShop(inventory);
+
+bookShop.inventoryValue();
+bookShop.priceForTitle('Harry Potter');
+
+
+
+Coding Exercise 23:
+
+const red = '#ff0000';
+const blue = '#0000ff';
+
+const COLORS = { red, blue };
+
+
+Coding Exercise 24:
+
+const fields = ['firstName', 'lastName', 'phoneNumber'];
+      
+const props = { fields };
+
+
+Coding Exercise 25:
+
+const canvasDimensions = function(width, initialHeight) {
+  const height = initialHeight * 9 /16;
+  return { 
+    width, 
+    height 
+  };
+}
+
+
+Coding Exercise 26:
+
+const color = 'red';
+
+const Car = {
+  color,
+  drive() {
+    return 'Vroom!';
+  },
+  getColor() {
+    return this.color;
+  }
+};
