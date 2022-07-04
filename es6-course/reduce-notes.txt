@@ -1,0 +1,105 @@
+// reduce
+
+var numbers = [10, 20, 30];
+
+
+// old way
+var sum = 0;
+
+for (var i = 0; i < numbers.length; i++) {
+  sum += numbers[i];
+}
+
+//new way
+numbers.reduce((sum, number) => {
+  return sum + number;
+}, 0)
+
+// reduce requires two parameters, the second parameter is the initial value
+// in the callback function we also add one more parameter which is the accumulator
+
+
+var primaryColors = [
+  { color: 'red' },
+  { color: 'yellow' },
+  { color: 'blue' }
+];
+
+primaryColors.reduce((previous, primaryColor) => {
+  // previous is the empty array we're passing as a 2nd parameter in the reduce helper.
+  previous.push(primaryColor.color);
+  
+  return previous; // [ 'red', 'yellow', 'blue' ]
+}, []) // empty array since we're starting off with an empty array and then we add all the colors.
+
+
+
+// When would we use Reduce ? besides summing up numbers...
+
+
+// Exercise: Find if the parenthesis are balanced
+// examples:
+// "()()()()"
+// "((()))"
+// NOT correct:
+// "))))"
+// "()))))"
+// ")("
+
+function balancedParens(string) {
+  // turn the string into an array so we can use the helpers
+  // return string.split("");
+  
+  // we add the '!' because javascript will convert the numbers [-infinity, 0] to false and [1, +infinity] to true
+  return !string.split("").reduce((previous, char) => {
+    if (previous < 0) { return previous; } // we return the accumulator so it does nothing
+    if (char === "(") { return ++previous; }
+    if (char === ")") { return --previous; }
+    
+    return previous;
+    
+  }, 0)
+  
+}
+
+balancedParens("()"); // true
+balancedParens("(()"); // false
+balancedParens(")("); // false
+
+
+// Coding Exercise 14:
+
+var trips = [{ distance: 34 }, { distance: 12 } , { distance: 1 }];
+
+var totalDistance = trips.reduce((sum, trip) => {
+    return sum += trip.distance;
+}, 0)
+
+// Coding Exercise 15:
+
+var desks = [
+  { type: 'sitting' },
+  { type: 'standing' },
+  { type: 'sitting' },
+  { type: 'sitting' },
+  { type: 'standing' }
+];
+
+var deskTypes = desks.reduce(function({sitting, standing}, desks) {
+    
+    if(desks.type === 'sitting') (sitting++);
+    if(desks.type === 'standing') (standing++);
+    
+    return {sitting, standing};
+  
+}, { sitting: 0, standing: 0 });
+
+
+// Coding Exercise 16:
+
+function unique(array) {
+    return array.reduce((acc, number) => {
+        acc.find(previousValue => number === previousValue) ? acc : acc.push(number);
+        return acc;
+    }, [])
+}
