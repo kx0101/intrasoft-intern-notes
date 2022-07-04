@@ -1,0 +1,94 @@
+σαριγγολης θοδωρης
+
+var products = [
+  { name: 'cucumber', type: 'vegetable' },
+  { name: 'banana', type: 'fruit' },
+  { name: 'celery', type: 'vegetable' },
+  { name: 'orange', type: 'fruit' },
+];
+
+// old way
+
+var filteredProductsOld = [];
+
+for (var i = 0; i < products.length; i++) {
+  if (products[i].type === 'fruit') {
+  	filteredProductsOld.push(products[i]);
+  }
+}
+
+// new way
+
+// it's similar to map but with a small difference. When we pass the array element to the iterator function, the function
+// will return either a true or a false. In case of a true result, the element will be included in the new array
+// if it's false, it won't be added at all.
+
+products.filter(product => {
+  return product.type === 'fruit'; // if it's true, it will be added to the new array
+  // return statement is a must otherwise it will return undefined and therefore an empty array
+})
+
+
+// what if we have more than one parameter to check
+// Type is 'vegetable', quantity is greater than 0, price is less than 10
+
+var products = [
+  { name: 'cucumber', type: 'vegetable', quantity: 0, price: 1 },
+  { name: 'banana', type: 'fruit', quantity: 10, price: 15 },
+  { name: 'celery', type: 'vegetable', quantity: 30, price: 9 },
+  { name: 'orange', type: 'fruit', quantity: 3, price: 5 },
+];
+
+products.filter(product => {
+  return product.type === 'vegetable' 
+    && product.quantity > 0 
+    && product.price < 10; 
+})
+
+// Choosing when to filter
+
+var post = { id: 4, title: "New Post" };
+var comments = [
+  { postId: 4, content: 'awesome post' },
+  { postId: 3, content: 'it was ok' },
+  { postId: 4, content: 'neat' },
+];
+
+function commentsForPost(post, comments) {
+	return comments.filter(comment => {
+  	return comment.postId === post.id;
+  })
+}
+
+commentsForPost(post, comments);
+
+// Coding Exercise 6:
+
+var numbers = [15, 25, 35, 45, 55, 65, 75, 85, 95];
+
+var filteredNumbers = numbers.filter(number => {
+    return number > 50;
+})
+
+
+// Coding Exercise 7:
+
+var users = [
+ { id: 1, admin: true },  
+ { id: 2, admin: false },
+ { id: 3, admin: false },
+ { id: 4, admin: false },
+ { id: 5, admin: true },
+];
+
+var filteredUsers = users.filter(user => {
+    return user.admin === true;
+})
+
+// Coding Exercise 8:
+
+function reject(array, iteratorFunction) {
+    return array.filter(e => {
+        return !iteratorFunction(e);
+    })
+}
