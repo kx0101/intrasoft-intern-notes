@@ -1,0 +1,77 @@
+// find will take every element of an array and pass it to the iterator function.  It will keep passing elements until
+// the function returns eventually true
+
+var users = [
+  { name: "Jill" },
+  { name: "Alex" },
+  { name: "Bill" }
+];
+var user;
+
+// old way
+
+for (var i = 0; i < users.length; i++) {
+  if (users[i].name === 'Alex') {
+    user = users[i];
+    break;
+  }
+}
+
+user;
+
+// new way
+users.find(user => {
+  return user.name === "Alex";
+})
+
+
+
+var posts = [
+  { id: 1, title: 'New Post' },
+  { id: 2, title: 'Old Post' }
+];
+
+var comment = { postId: 1, content: 'Great Post' };
+
+// function postForComment that returns the post that has the same id as the comment.
+// we return the result of the find function which is the post itself
+function postForComment(posts, comment) {
+  return posts.find(post => {
+  	return post.id === comment.postId;
+  })
+}
+
+postForComment(posts, comment)
+
+
+// Coding Exercise 9:
+
+var users = [
+  { id: 1, admin: false },
+  { id: 2, admin: false },
+  { id: 3, admin: true }
+];
+
+var admin = users.find(user => {
+    return user.admin === true
+})
+
+// Coding Exercise: 10:
+
+var accounts = [
+  { balance: -10 },
+  { balance: 12 },
+  { balance: 0 }
+];
+
+var account = accounts.find(account => {
+    return account.balance === 12;
+})
+
+// Coding Exercise 11:
+
+function findWhere(array, criteria) {
+  return array.find(element => {
+      return element['height'] === criteria['height'];
+  })
+}
