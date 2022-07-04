@@ -1,0 +1,75 @@
+// Every helper
+
+var computers = [
+  { name: 'Apple', ram: 24},
+  { name: 'Compaq', ram: 4},
+  { name: 'Acer', ram: 32}
+];
+
+// old way
+
+var allComputersCanRunProgram = true;
+var onlySomeComputersCanRunProgram = false;
+
+for (var i = 0; i < computers.length; i++) {
+  var computer = computers[i];
+  
+  if (computer.ram < 16) {
+    allComputersCanRunProgram = false;
+  } else {
+    onlySomeComputersCanRunProgram = true;
+  } 
+}
+
+// new way - Every
+
+computers.every(computer => {
+  return computer.ram > 16; // false, not every computer has ram greater than 16.
+  // it will return true only if ALL the computers have ram greater than 16.
+  // even if at least one is less than 16, it will return false.
+})
+
+
+// new way - Some
+
+computers.some(computer => {
+  return computer.ram > 16; // true, even if one computer matches the criteria then it will return true;
+})
+
+var names = [
+  "Alexandria",
+  "Matthew",
+  "Joe"
+];
+
+names.every(name => {
+  return name.length > 4; // returns true only if ALL the names length is greater than 4
+})
+
+names.some(name => {
+  return name.length > 4; // returns true even if only ONE name length is greater than 4
+})
+
+// Coding Exercise 12:
+
+var users = [
+  { id: 21, hasSubmitted: true },
+  { id: 62, hasSubmitted: false },
+  { id: 4, hasSubmitted: true }
+];
+
+var hasSubmitted = users.every(user => {
+    return user.hasSubmitted === true;
+})
+
+// Coding Exercise 13:
+
+var requests = [
+  { url: '/photos', status: 'complete' },
+  { url: '/albums', status: 'pending' },
+  { url: '/users', status: 'failed' }
+];
+
+var inProgress = requests.some(request => {
+    return request.status === 'pending';
+})
