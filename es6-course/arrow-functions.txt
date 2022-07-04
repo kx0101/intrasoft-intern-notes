@@ -1,0 +1,60 @@
+// Arrow Functions
+
+const add = function(a, b) {
+	return a + b;
+}
+
+add(1, 2); // 3
+
+// es6
+
+const add_es6 = (a, b) => {
+	return a + b;
+}
+
+add(1, 2); // 3
+
+
+// if we have only one expression, we can refactor add function in one line such as
+
+const add_es6_short = (a, b) => a + b; // it's not practical to do that when the expression is a big line of logic code.
+
+add(1, 2); // 3
+
+const add_error = (a, b) => {
+	a + b; // error,  you need the return keyword if you're going to add the curly braces.
+}
+
+
+// another example
+const numbers = [1, 2, 3];
+
+numbers.map(number => 2 * number);
+
+
+
+
+Coding Exercise 21:
+
+const fibonacci = (n) => {
+  if (n < 3) return 1;
+  return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+Coding Exercise 22:
+
+const profile = {
+    name: 'Alex',
+    getName: function() {
+        return this.name;
+    }
+};
+
+or
+
+const profile = {
+    name: 'Alex',
+    getName: () => {
+        return profile.name;
+    }
+};
