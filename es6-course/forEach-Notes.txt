@@ -46,3 +46,32 @@ numbers.forEach(adder); // no parenethesis, we're passing the callback function 
 
 // Print the sum
 sum;
+
+
+// Coding Exercise 1:
+
+function handlePosts() {
+    var posts = [
+      { id: 23, title: 'Daily JS News' },
+      { id: 52, title: 'Code Refactor City' },
+      { id: 105, title: 'The Brightest Ruby' }
+    ];
+    
+    posts.forEach(post => {
+        savePost(post)
+    })
+}
+
+// Coding Exercise 2:
+
+var images = [
+  { height: 10, width: 30 },
+  { height: 20, width: 90 },
+  { height: 54, width: 32 }
+];
+var areas = [];
+
+images.forEach(image => {
+    let area = image.height * image.width;
+    areas.push(area);
+})
