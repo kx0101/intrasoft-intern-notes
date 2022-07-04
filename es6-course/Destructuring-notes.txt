@@ -199,3 +199,36 @@ Coding Exercise 34:
 function double([number, ...rest]) {
   return !number ? [] : [number * 2, ...double(rest)];
 }
+
+// pernaei sthn double enan pinaka number kai sto return vlepei an uparxei element mesa sto array
+// an den yparxei tote apla gurizei empty array
+// an yparxei tote to pollaplasiazei * 2 kai tote ksana kalei thn double me ta ypoloipa elements
+// to spread operator prin thn double uparxei dioti thes na krathseis ton arithmo pou pollaplasiases amesws prin
+
+// 1h klhsh
+
+// double([1, 2, 3])
+
+// number = 1, ...rest = [2, 3]
+
+// number ginetai 1 * 2 = 2 kai rest exoume to [2, 3]
+
+// numbers = [2, 2, 3];
+
+// 2h klhsh
+
+// number = 2, ...rest = [3]
+
+// number ginetai 2 * 2 = 4 kai rest exoume to [3]
+
+// numbers = [2, 4, 3];
+
+// 3h klhsh
+
+// number = 3, ...rest = []
+
+// number ginetai 3 * 2 = 6 kai rest exoume to []
+
+// numbers = [2, 4, 6];
+
+// opote output [2, 4, 6]
