@@ -1,0 +1,85 @@
+/// rest operator is used to gather together variables
+
+// spread operator is used to spread them out
+
+// Rest operator
+
+function addNumbers(numbers) {
+  return numbers.reduce((sum, number) => sum + number, 0);
+}
+
+addNumbers([1, 2, 3, 4, 5]);
+
+// arguments list will have some unknown number of arguments
+// we're basically telling the function that no matter how many arguments you receive, you will do the same
+// exact thing, which is adding them.
+// It's worth mentioning that the ...numbers will be an array of all the arguments that have been passed.
+function addNumbers_short(...numbers) {
+  return numbers.reduce((sum, number) => sum + number, 0);
+}
+
+addNumbers_short(1, 2, 3, 4, 5, 6, 7, 8, 9);
+
+
+// Spread operator
+
+const defaultColors = ['red', 'green'];
+const userFavoriteColors = ['orange', 'yellow'];
+
+defaultColors.concat(userFavoriteColors); // ['red', 'green', 'orange', 'yellow']
+
+// ==
+
+[ ...defaultColors, ...userFavoriteColors ]; // ['red', 'green', 'orange', 'yellow']
+
+
+// we're basically saying spread out all the elements of the array into a new array.
+
+// 1st reason which we prefer spread operator over concat
+// we can just add a new array on top of it very easily and quickly
+
+const fallColors = ['fire red', 'fall orange'];
+
+[ ...fallColors, ...defaultColors, ...userFavoriteColors ]; // ['fire red', 'fall orange', 'red', 'green', 'orange', 'yellow']
+
+
+// 2nd reason
+// we can easily add a single element quickly too
+
+[ 'blue', ...fallColors, ...defaultColors, ...userFavoriteColors ];
+
+
+
+// if you didn't get milk, I'm gonna help you add it on your list :)
+
+function validateShoppingList(...items) {
+  if (items.indexOf('milk') < 0) {
+    return [ 'milk', ...items ];
+  }
+  
+  return items;
+}
+
+validateShoppingList('oranges', 'bread', 'eggs');
+
+
+
+Coding Exercise 29:
+
+function product(...numbers) {
+  return numbers.reduce(function(acc, number) {
+    return acc * number;
+  }, 1)
+}
+
+Coding Exercise 30:
+
+function join(array1, array2) {
+  return [...array1, ...array2];
+}
+
+Coding Exercise 31:
+
+function unshift(array, ...items) {
+  return [...items, ...array];
+}
