@@ -1,0 +1,42 @@
+// var dies after es6
+// it's either let or const
+
+// const is used to declare variables that will not change
+// let is exactly the opposite
+
+
+// ES5
+
+var name = 'Jane';
+var title = 'Software Engineer';
+var hourlyWage = 40;
+
+// ES6 Refactoring
+
+const name = 'Jane';
+let title = 'Software Engineer';
+let hourlyWage = 40;
+
+// some time later...
+
+title = 'Senior Software Engineer';
+
+
+name = 'Janet' // error, name cannot change
+
+
+// Coding Exercise 18:
+
+const statuses = [ 
+  { code: 'OK', response: 'Request successful' },
+  { code: 'FAILED', response: 'There was an error with your request' },
+  { code: 'PENDING', response: 'Your reqeust is still pending' }
+];
+let message = '';
+let currentCode = 'OK';
+
+for (let i = 0; i < statuses.length; i++) {
+  if (statuses[i].code === currentCode) {
+    message = statuses[i].response;
+  }
+}
