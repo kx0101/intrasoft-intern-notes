@@ -1,0 +1,201 @@
+// Destructuring
+
+// old way
+var cost = {
+  type: "Business",
+  amountL "$45 USD"
+};
+
+var type = cost.type;
+var amount = cost.amount;
+
+
+// new way -- we are NOT creating an object.
+// we're just saying declare a new variable type with the type property
+const { type } = cost;
+const { amount } = cost;
+
+// even shorter
+
+const { type, amount } = cost;
+
+
+const { myType, amount } = cost;
+myType; // undefined, the variable name should be the SAME as the property name
+
+
+var savedFile = {
+  extension: 'jpg',
+  name: 'report',
+  size: 40
+}
+
+function fileSummary(file) {
+  return `The file ${file.name}.${file.extension} is of size ${file.size}`
+}
+
+fileSummary(savedFile); // The file report.jpg is size of 40
+
+
+// es6
+
+// we're bringing the name extension and size properties from the FIRST object we receive
+function fileSummary({ name, extension, size }) {
+  return `The file ${name}.${extension} is of size ${size}`
+}
+
+// what if we had two objects ?
+// We're spreading the objects using a ',' and then we choose whichever property we want.
+function fileSummary({ name, extension, size}, { color }) {
+  return `The file ${name}.${extension} is of size ${size} ${color}`;
+}
+
+
+fileSummary(savedFile, { color: 'red' });
+
+
+// we can also destruct arrays
+
+const companies = [
+  'Google',
+  'Facebook',
+  'Uber'
+];
+
+// When we destructure objects, we pull off properties -- curly braces
+// When we destructure arrays, we pull of individual elements -- brackets
+
+const firstCompany = companies[0];
+
+// WITH destructuring
+
+const [ name ] = companies; // Google
+
+// Destructuring & spread operator
+
+const [ name, ...rest ] = companies;
+rest; // ["Facebook", "Uber"]
+name; // Google
+
+
+
+
+const companies = [
+  { name: 'Google', location: 'Mountain View' },
+  { name: 'Facebook', location: 'Menlo Park' },
+  { name: 'Uber', location: 'San Francisco' }
+];
+
+var location = companies[0].location;
+location // Mountain View
+
+
+// es6
+
+const [{ location }] = companies; // getting the first element using the brackets
+// then we get the location property
+// these are two set of destructuring
+
+
+const Google = {
+  locations: ['Mountain View', 'New York', 'London']
+};
+
+
+// look into Google object, find locations property and find the first location
+const { locations: [ location ] } = Google;
+location // Mountain View
+
+
+// When to use Destructuring ?
+
+function signup(username, password, email, dateOfBirth, city) {
+  // create new user
+}
+
+signup('myname', 'mypassword', 'w@w.com', '1/1/1990', 'Test');
+
+
+
+// es6, the code will not break, we don't have to worry about the order of the arguments
+
+function signup({ username, password, email, dateOfBirth, city }) {
+  // create new user
+}
+
+const user = {
+  username: 'myname',
+  password: 'mypassword',
+  email: 'w@w.com',
+  dateOfBirth: '1/1/1990',
+  city: 'Test'
+}
+
+signup(user);
+
+
+
+// In arrays - besides giving us the first element of an array
+
+const points = [
+  [4, 5],
+  [10, 1],
+  [0, 40]
+];
+
+// goal is:
+
+[
+  { x: 4, y: 5 },
+  { x: 10, y: 1 },
+  { x: 0, y: 40 }
+]
+
+points.map(pair => {
+  
+	const x = pair[0];
+  const y = pair[1];
+  
+  // Destructuble! - let's refactor
+  
+});
+
+// es6
+points.map(([ x, y ]) => {
+	return { x, y };
+});
+
+
+
+
+Coding Exercise 32:
+
+const profile = {
+  title: 'Engineer',
+  department: 'Engineering'
+};
+
+function isEngineer(profile) {
+    const { title, department } = profile;
+    return title === 'Engineer' && department === 'Engineering';
+}
+
+
+Coding Exercise 33:
+
+const classes = [
+  [ 'Chemistry', '9AM', 'Mr. Darnick' ],
+  [ 'Physics', '10:15AM', 'Mrs. Lithun'],
+  [ 'Math', '11:30AM', 'Mrs. Vitalis' ]
+];
+
+const classesAsObject = classes.map(([subject, time, teacher]) => {
+   return { subject, time, teacher } 
+});
+
+
+Coding Exercise 34:
+
+function double([number, ...rest]) {
+  return !number ? [] : [number * 2, ...double(rest)];
+}
