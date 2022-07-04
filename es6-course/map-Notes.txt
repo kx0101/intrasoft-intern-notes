@@ -1,0 +1,64 @@
+// map is being used when we want to modify records in some lists of data
+
+var numbers = [1, 2, 3];
+
+var doubled = numbers.map(number => {
+	return number * 2;
+})
+
+// we take the first element of the numbers array and we pass it to the iterator function, then we multiply by 2 and then 
+// returns the number 2 in a NEW array which we name it as 'doubled'.
+
+doubled;
+
+// it's not efficient to mutate data so this is why we're saving the numbers in a new array
+
+
+
+// example: Print out an object key in an array of objects
+
+var cars = [
+  { model: 'Buick', price: 'CHEAP' },
+  { model: 'Camaro', price: 'expensive' }
+];
+
+var prices = cars.map(car => {
+  return car.price;
+});
+
+
+prices;
+
+// Coding Exercise 3:
+
+var images = [
+  { height: '34px', width: '39px' },
+  { height: '54px', width: '19px' },
+  { height: '83px', width: '75px' },
+];
+
+var heights = images.map(image => {
+    return image.height;
+})
+
+// Coding Exercise 4:
+
+var trips = [
+  { distance: 34, time: 10 },
+  { distance: 90, time: 50 },
+  { distance: 59, time: 25 }
+];
+
+var speeds = trips.map(trip => {
+    return trip.distance / trip.time;
+})
+
+// Coding Exercise 5:
+
+function pluck(array, property) {
+    var result = array.map(element => {
+        return element[property];
+    })
+    
+    return result;
+}
