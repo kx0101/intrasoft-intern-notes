@@ -1,0 +1,55 @@
+// Promises
+
+// States of Promises
+
+// Unresolved - Resolve - Reject
+
+// Unresolved = waiting for something to finish
+// Resolved = something finished and it all went ok
+// Rejected = something finished and something went bad
+
+
+// Everything worked out ?
+
+
+// status 'resolved
+
+// Callback with then
+
+
+// Something bad happened ?
+
+
+// status 'rejected
+
+// Callback with catch
+
+
+let promise = new Promise((resolve, reject) => {
+  resolve(); // resolved state
+  reject(); // rejected state
+});
+
+let promised = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve();
+  }, 3000);
+});
+
+// for resolved
+promised
+  .then(() => console.log('done'))
+  .then(() => console.log('I run too!'));
+
+// for rejected
+promised
+  .catch(() => console.log('broke'))
+
+url = "https://jsonplaceholder.typicode.com/posts/";
+
+fetch(url)
+    .then(response => response.json())
+    .then(data => console.log(data)); // logs all the data from that endpoint
+
+// fetch is a promise
+// axios is better
