@@ -1,0 +1,99 @@
+// Classes
+
+// old way
+
+// constructor for car
+function Car(options) {
+  this.title = options.title;
+}
+
+// methods
+
+// we add it to the prototype property of the constructor 
+// not important
+Car.prototype.drive = function() {
+  return 'vroom';
+}
+
+
+// constructor for toyota
+function Toyota(options){
+  this.color = options.color;
+}
+
+
+// new car
+const car = new Car({ title: 'Focus' });
+car.drive();
+car;
+
+// new toyota
+const toyota = new Toyota({ color: 'red', title: 'Daily Driver' });
+toyota;
+
+
+// new way es6
+
+// we don't need a comma ',' between methods
+class Car {
+ 
+  // we define the constructor as 'constructor'
+  // initialization of instance car
+  constructor({ title }) {
+  	this.title = title;
+  }
+  
+  drive() {
+    return 'vroom'
+  }
+  
+}
+
+class Toyota extends Car {
+  
+  constructor({ title, color }) {
+    super({ title, color }); // Calling Car.constructor()
+    this.color = color;
+    this.title = title;
+  }
+  
+  honk() {
+		return 'beep';
+  }
+}
+
+const toyota = new Toyota({ color: 'red', title: 'Daily Driver' });
+'==='
+toyota.honk();
+toyota.drive();
+
+// how to allow toyota to inherit methods from the car class
+
+// class Toyota extends Car
+
+
+
+
+Coding Exercise 35:
+
+class Monster {
+  constructor(options) {
+      this.name = options.name;
+      this.health = 100;
+  }
+}
+
+Coding Exercise 36:
+
+class Monster {
+  constructor(options) {
+    this.health = 100;
+    this.name = options.name;
+  }
+}
+
+class Snake extends Monster {
+    bite(other) {
+        other.health -= 10;
+    }
+}
