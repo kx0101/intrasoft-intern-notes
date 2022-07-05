@@ -1,0 +1,180 @@
+// what is for.. of loop ?
+
+const colors = ['red', 'green', 'blue'];
+
+// iterating for every elemnt of the array colors and we name each element as 'color'
+for (let color of colors) {
+  
+}
+
+const numbers = [1, 2, 3, 4, 5];
+
+let total = 0;
+for (let number of numbers) {
+  total += number; // 15
+}
+
+
+// Generators
+
+// A generator is a function that can be entered and exited multiple times
+// normaly a function will run return a value and that's it
+// with generators we can return a value and then continue from the same point we left it
+
+function* shopping() {
+  // stuff on the sidewalk
+  
+  // walking down the sidewalk
+  
+  // go into the store with cash
+  const stuffFromStore = yield 'cash'; 
+  
+  // walking to laundry place
+  const cleanClothes = yield 'laundry';
+  
+  // walking back home
+  return [ stuffFromStore, cleanClothes ];
+  
+}
+
+// stuff in the store
+const gen = shopping(); // const is an object with a .next method
+gen.next(); // leaving our house
+// walked into the store
+// walking up and down the aisles..
+// purchase our stuff
+
+gen.next('groceries'); // leaving the store with groceries
+gen.next('clean clothes');
+
+function* colors() {
+ 	yield 'red';
+  yield 'blue';
+  yield 'green';
+}
+
+// const gen = colors();
+// gen.next(); // value red false
+// gen.next(); // value blue false
+// gen.next(); // value green false
+// gen.next(); // true
+
+const myColors = [];
+for (let color of colors()) {
+  myColors.push(color);
+}
+myColors; // ['red', 'blue', 'green']
+
+
+// practical use
+
+// Generate Delegation
+
+// Engineering team
+// Lead - Manager - Engineer - Testing Team
+
+// Testing Team
+// Lead - Tester
+
+const testingTeam = {
+  lead: 'Amanda',
+  tester: 'Bill'
+};
+
+const engineeringTeam = {
+  testingTeam, // good practice to keep them on top
+  size: 3,
+  department: 'Engineering',
+  lead: 'Jill',
+  manager: 'Alex',
+  engineer: 'Dave'
+};
+
+function* TeamIterator(team) {
+  yield team.lead;
+  yield team.manager;
+  yield team.engineer;
+  // team is the engineering team
+  const testingTeamGenerator = TestingTeamIterator(team.testingTeam);
+  yield* testingTeamGenerator;
+  // yield* means: I've got another generator that has a couple of yield statements
+  // yield* is kinda like a trap door.
+}
+
+function* TestingTeamIterator(team) {
+ 	// yield* has these two yield
+  yield team.lead;
+  yield team.tester;
+}
+
+const names = [];
+for (let name of TeamIterator(engineeringTeam)) {
+  names.push(name);
+}
+names; // ['Jill', 'Alex', 'Dave', 'Amanda', 'Bill']
+
+
+// can we make the code even cleaner ?
+
+// es6
+
+const testingTeam = {
+  lead: 'Amanda',
+  tester: 'Bill',
+  [Symbol.iterator]: function* () { // [Symbol.iterator] is a key // the generator is the function
+    yield this.lead;
+    yield this.tester; 
+  }
+};
+
+const engineeringTeam = {
+  testingTeam,
+  size: 3,
+  department: 'Engineering',
+  lead: 'Jill',
+  manager: 'Alex',
+  engineer: 'Dave',
+  [Symbol.iterator]: function* () {
+   	yield this.lead;
+    yield this.manager;
+    yield this.engineer;
+    yield* this.testingTeam; // this will proc the [Symbol.iterator] function in testingTeam
+  }
+};
+
+const names = [];
+for (let name of engineeringTeam) {
+  names.push(name);
+}
+names; // ['Jill', 'Alex', 'Dave', 'Amanda', 'Bill']
+
+
+class Comment {
+  constructor(content, children) {
+    this.content = content;
+    this.children = children;
+  }
+  
+  *[Symbol.iterator]() {
+    yield this.content;
+    // we can't call helpers here
+    // we have to use the for ... of loop
+    for (let child of this.children) {
+      yield* child
+    }
+  }
+}
+
+const children = [
+	new Comment("good comment", []), // 0 children
+  new Comment("bad comment", []), // 0 children
+  new Comment("meh", []) // 0 children
+];
+
+const tree = new Comment('Great post!', children); // 3 children
+
+const values = [];
+for (let value of tree){
+ values.push(value); 
+}
+values; // ["Great post!","good comment","bad comment","meh"]
