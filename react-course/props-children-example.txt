@@ -1,0 +1,26 @@
+const Layout = (props) => {
+  return (
+    <>
+      <p>header</p>
+      {props.children} // This is children
+      <p>footer</p>
+    </>
+  );
+};
+
+const template = (
+  <>
+    <h1>Page Title</h1>
+    <p>This is my page</p>
+  </>
+);
+
+ReactDOM.render(
+  <Layout>
+    <p>This is children</p>
+  </Layout>,
+  document.getElementById("app")
+);
+
+// {props.content} will show the template content
+ReactDOM.render(<Layout content={template} />, document.getElementById("app"));
