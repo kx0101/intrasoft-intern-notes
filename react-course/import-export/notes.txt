@@ -1,0 +1,82 @@
+ES6 import/export
+
+
+// app.js
+
+
+import { square, add } from ‘./utils.js’
+
+console.log(square(4)); // 8
+console.log(add(2, 2)); // 4
+
+
+// utis.js
+
+
+Const square = x => x * x;
+
+Const add = (a, b) => a + b;
+
+// exports — default export — named exports
+
+export { square, add }; // not an object, named exports
+
+or
+
+We can add the keyword export in front of the initialisation of the variable.
+
+(e.g. export const square = x => x * x)
+
+
+
+DEFAULT EXPORT
+
+// one default export per file
+
+const subtract = (a, b) => a - b;
+
+export default { subtract as default };
+
+If we do
+
+Import { square, add, subtract } from ‘./utils.js’ // it won’t work because we’re trying to import something a file never exports
+// subtract is not a named export
+
+How can we fix it ?
+
+Import subtract, { square, add } from ‘./utils.js’ // since it’s default export the name subtract doesn’t matter, we could name it whatever we want
+
+// most likely the function component is always gonna be the default export
+
+More ways to export default
+
+We can’t do:
+
+export default const subtract = (a, b) => a - b; // error
+
+The correct way:
+
+const subtract = (a, b) => a - b;
+
+export default subtract
+
+Or
+
+export default (a, b) => a - b;
+
+
+
+
+How to import npm modules
+
+
+// install -> import -> use
+
+For example: npm validator
+
+
+Install -> npm i validator
+
+Import -> import validator from ‘validator’
+
+Use -> validator.isEmail(‘liakos.koulaxis@yahoo.com’) // true
