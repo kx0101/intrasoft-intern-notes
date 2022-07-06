@@ -1,0 +1,26 @@
+
+Webpack in the root folder
+It’s a node script
+
+webpack.config.js
+
+Const path = require(‘path’);
+
+// entry point -> output
+
+path.join(__dirname, ‘public’) (path of the current location)
+
+module.exports = {
+	entry: ‘./src/app.js’ // where should it start
+	output: {
+		path: path.join(__dirname, ‘public’) , // absolute path of your machine to output the file
+		filename: ‘bundle.js’ // common name
+	}
+};
+
+
+In package.json
+
+“Build”: “webpack —watch” // watch is watching for any changes, automatically refresh the page
+
+You MUST include a config file that includes entry and output.
