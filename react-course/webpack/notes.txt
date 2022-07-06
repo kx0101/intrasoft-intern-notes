@@ -15,7 +15,8 @@ module.exports = {
 	output: {
 		path: path.join(__dirname, ‘public’) , // absolute path of your machine to output the file
 		filename: ‘bundle.js’ // common name
-	}
+	},
+	devtool: 'cheap-module-eval-source-map' // actual line of code in case of an error
 };
 
 
