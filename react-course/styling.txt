@@ -1,0 +1,81 @@
+// app.js
+
+import './styles/styles.scss' // crash
+
+Because our app would saw that this is not javascript and it would output an error. So, we had to go to the webpack.config and kind of guide the application what to do when it finds scss files.
+
+
+
+// styles.scss // inside of styles folder, root.
+
+// we import every scss file in here, we don't need to import every file in every component
+
+// variables
+$brand-color: blue;
+
+* {
+	color: $brand-color; // blue
+}
+
+
+
+
+
+folder base
+// global css configuration
+
+for example: body { font-family: Arial, Helvetica, sans-serif }
+
+// styles.css 
+
+@import './base/settings'; // always first in order to use theme variables
+@import './base/base'; // even though the file is named _base.scss, that's because we're telling the app that this file 
+// contains styles that are being used.
+@import './components/header' // style component
+
+// _header.scss
+
+.header {
+	background: #20222b;
+}
+
+// BEM block element modifier
+// className="header__title"
+.header__title {
+	font-size: 3.2rem;
+}
+
+// npm i normalize // css components
+
+import 'normalize.css/normalize.css' // it will crash because we removed the .css in the webpack, we're looking just for scss
+
+How do we fix it ?
+
+test: /\.s?css$/   // we add a question mark after s so that's gonna make the s optional. So both .css and .scss
+
+// how to define theme variables ( variables to re-use in different files ) ? such as for font-size
+
+// _settings.scss
+
+// Colors
+
+$off-black: #20222b;
+$off-white: #a5afd7;
+
+now we can change the
+.header__title {
+	font-size: 3.2rem;
+}
+
+to
+
+.header {
+	background: $off-black; // it was #20222b;
+} 
+
+
+// another example
+// _settings.scss
+$m-size: 1.6rem;
+// in scss file
+font-size: $m-size;
