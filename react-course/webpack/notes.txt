@@ -16,6 +16,14 @@ module.exports = {
 		path: path.join(__dirname, ‘public’) , // absolute path of your machine to output the file
 		filename: ‘bundle.js’ // common name
 	},
+	module: {
+		rules: [{
+			test: /\.js$/,
+			exlucde: /node_modules/
+		}, {
+			test: /\.css$/
+		}]
+	},
 	devtool: 'cheap-module-eval-source-map' // actual line of code in case of an error,
 	devServer: {
 		contentBase: path.join(__dirname, 'public') // webpack dev server
