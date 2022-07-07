@@ -21,7 +21,7 @@ module.exports = {
 			test: /\.js$/,
 			exlucde: /node_modules/
 		}, {
-			test: /\.scss$/, // look for scss files
+			test: /\.s?css$/, // look for scss/css files ( s optional that's why we put a question mark )
 			use: [
 				'style-loader',
 				'css-loader', // set up webpack with css
