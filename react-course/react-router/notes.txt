@@ -1,0 +1,32 @@
+React Router
+
+
+<BrowserRouter>
+	<Route path=“/“ component={FirstComponent} exact={true} /> // we’re adding the exact prop because every route starts with a forward slash and we therefore it will load every single component that start with the forward slash.
+	<Route path=“/create“ component={SecondComponent} />
+	<Route path=“/edit“ component={ThirdComponent} />
+	<Route component={NotFoundComponent} />
+</BrowserRouter>
+
+// If we don’t use Switch then every route will show the NotFoundComponent as well.
+// We’re using Switch because what switch does is it checks 1 <Route /> at a time and if it finds a match then it will stop looking for more matches.
+
+// so for example if we start head over to /create, it will start off with / which is not a match then /create which is a match and it still stop. It won’t check the /edit or anything beyond the match.
+
+// We accomplish the NotFound mechanism that way. Basically, when we don’t head to an existing route, Switch will try to match the non-existent route with one of the routes but it won’t succeed. Therefore, it will load the last one which since it doesn’t have a path, it’s always a match.
+
+
+
+Inside the NotFoundComponent we can add a link back to the home page
+If we do it this way :
+<a href=“/”>Go home</a> // the page will do a full refresh and we don’t want that. So, we’re going to use Link from react-router-dom
+
+<Link to=“/“>Go Home</Link>
+
+We do have to use anchor tag though when we want to link something that’s not in our application.
+
+NavLink is used mostly as navigation (e.g. Navbar), it’s basically Link with more props to take advantage of.
+For example: <NavLink to=“/“ activeClassName=“some-style”>Go Home</NavLink>
+
+Location object for query strings
+Match object for url params
