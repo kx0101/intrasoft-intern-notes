@@ -21,7 +21,11 @@ module.exports = {
 			test: /\.js$/,
 			exlucde: /node_modules/
 		}, {
-			test: /\.css$/
+			test: /\.css$/,
+			use: [
+				'style-loader',
+				'css-loader' // set up webpack with css
+			}
 		}]
 	},
 	devtool: 'cheap-module-eval-source-map' // actual line of code in case of an error,
