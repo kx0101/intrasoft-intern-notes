@@ -1,4 +1,4 @@
-import { configureStore, combineReducers, combineReducers } from "redux";
+import { configureStore, combineReducers } from "redux";
 import uuid from "uuid";
 
 // ADD_EXPENSE
