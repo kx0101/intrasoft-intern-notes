@@ -21,10 +21,11 @@ module.exports = {
 			test: /\.js$/,
 			exlucde: /node_modules/
 		}, {
-			test: /\.css$/,
+			test: /\.scss$/, // look for scss files
 			use: [
 				'style-loader',
-				'css-loader' // set up webpack with css
+				'css-loader', // set up webpack with css
+				'sass-loader' // node sass to convert file to css
 			}
 		}]
 	},
