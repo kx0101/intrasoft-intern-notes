@@ -31,7 +31,8 @@ module.exports = {
 	},
 	devtool: 'cheap-module-eval-source-map' // actual line of code in case of an error,
 	devServer: {
-		contentBase: path.join(__dirname, 'public') // webpack dev server
+		contentBase: path.join(__dirname, 'public') // webpack dev server,
+		historyApiFallback: true, // it should return the index.html for every route and then we will configure the router in order to display the correct 					     // component
 	}
 	// we also need "dev-server": "webpack-dev-server" in package.json inside scripts
 };
