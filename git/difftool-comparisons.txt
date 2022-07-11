@@ -1,0 +1,31 @@
+head means the last commit of the branch
+
+
+git difftool ( will open p4merge and show the detailed changes )
+
+git diff HEAD ( will show the details of the last commit of the head )
+
+git difftool HEAD
+
+git diff —staged HEAD ( check the staged change of the head )
+
+or
+
+git difftool —staged HEAD ( to open p4merge )
+
+
+git diff — README.md ( returns only the change involving README.md file )
+
+or
+
+git difftool — README.md
+
+git diff sha1 HEAD ( compares commit with the head )
+
+git diff HEAD HEAD^ ( compares head and head - 1 commit )
+
+git difftool commitOne commitTwo
+
+comparing local with remote master branches
+
+git difftool master origin/master
