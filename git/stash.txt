@@ -1,0 +1,13 @@
+Stash ( tracked files only )
+
+git stash ( git stash temporarily shelves (or stashes) changes you've made to your working copy so you can work on something else, and then come back and re-apply them later on. )
+
+git stash list ( Shows list of stashed changes )
+
+-stash{0}
+-stash{1}
+etc.
+
+git stash apply stash@{0}( Retrieve last stash )
+
+git stash drop stash@{0} ( drop last stash )
