@@ -1,0 +1,35 @@
+Tags
+
+git tag tagName
+
+git tag —list
+
+git tag —delete tagName
+
+git tag -a (annotated tag) v-1.0 ( tag with title and a message, a text editor will open up to enter the message )
+
+or
+
+git tag -a v-1.0 -m “message goes here”
+
+git diff v-1.0 v-1.1 ( diffing two tags )
+
+Tagging a specific commit
+
+git tag -a v-0.9-beta 96ef75b
+
+how to edit a tag that already exists?
+
+git tag -a v-0.9-beta -f 96ef76b ( opens up a text editor to change the tag ) 
+
+git push origin v-0.9-beta ( pushing a tag )
+
+How to push all the tags ?
+
+git push origin master —tags
+
+How to delete a tag ?
+
+git tag —list ( to see all the tags )
+
+git push origin :v-0.9-beta ( delete the tag from the remote repository )
