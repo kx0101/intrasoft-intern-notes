@@ -1,0 +1,17 @@
+Branches
+
+git branches -a ( will list local and remote branches )
+
+git branch newBranch ( new local branch )
+
+git checkout newBranch ( to switch to newBranch )
+
+git branch newBranch myNewBranch ( rename the branch )
+
+git brandh -d myNewBranch ( will delete myNewBranch, you need to be in a different branch )
+
+git checkout -b createBranch ( will create a new branch called createBranch and will also checkout in that branch )
+
+git difftools master newBranch ( show differences between master and newBranch branches )
+
+git merge newBranch -m “message goes here” ( merged with the master branch )
