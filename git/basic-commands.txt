@@ -1,0 +1,81 @@
+Git
+
+It’s a good practice to always pull before pushing when you’re working with a team
+
+git add .
+git commit -m “hello”
+
+Can be written in one line such as : 
+git commit -am “hello”
+
+git ls-files ( Gives a list of all the files that git is tracking in the current repository )
+
+git reset HEAD file.txt (brings the file back to the working directory (basically before commit))
+
+git checkout — file.txt (undos the changes (to the last commit))
+
+git mv file.txt file2.txt (renamed file.txt to file2.txt) -> it’s also staged in git
+
+—Always rename before do changes—
+
+If I do mv file.txt file2.txt , git then will think that we deleted the file.txt and we added a file2.txt instead
+If you do git add -A , git will then understand that this was a rename (outside of git, using bash) and not a deletion
+
+Let’s say you rename the file to file2
+
+git mv file.txt file2.txt
+
+And you change your name, just simply do:
+git mv file2.txt file.txt
+
+mv file2.txt ..    // moves the file
+( git will think that we deleted the file2.txt and we added a file2.txt in a different folder)
+git add -A to fix that
+
+git rm file2.txt   // for deletion when the file is being tracked by the git
+
+git reset HEAD file2.txt // unstaged the deletion
+
+Although git knows that there is a deleted file it didn’t actually restore the file, it just unstaged the deletion
+
+In order to restore the file you need to do:
+git checkout — file2.txt to discard changes
+
+rm -rf folderName
+
+git log for commit history
+
+git log —abbrev-commit ( for shorter sha1 commit id )
+
+git log —oneline —graph —decorate ( getting all the commits in one line )
+
+git log ae6f872…761b911 ( show the commits within a range of commits )
+
+git log —since=“3 days ago” ( commits that have happened in the last 3 days )
+
+git log — file.txt ( all the commits that involve that specific file )
+
+git log —follow — pathOfTheFile
+
+git show sha1 ( shows the commit )
+
+git config —global alias.nameOfTheCommand “full actual command for example: log —all —graph —decorate —oneline”
+
+So now you can run:
+
+git nameOfTheCommand
+
+And it will run (git log —all —graph —decorate —oneline)
+
+Where are the alias stored ?
+
+~/.gitconfig
+[alias]
+Aliases go here
+
+Let’s say you want to ignore certain files and folders
+
+.gitignore
+Specific File: MyFile.ext
+File Pattern: *.ext
+Folder: my-folder/
