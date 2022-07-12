@@ -1,0 +1,7 @@
+Questions you need to answer for the daily stand-up
+
+1) What did you do yesterday to achieve the sprint goal ?
+
+2) What are you going to do today that will help us achieve the sprint goal ?
+
+3) Do you have any impediments that might hinder or become an obstacle towards us achieving the sprint ?
