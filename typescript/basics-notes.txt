@@ -1,0 +1,273 @@
+Typescript
+
+let id: number = 5
+let company: string = ‘hello’
+let isPublished: boolean = true
+let x: any = ‘helloagain’
+
+x = 5 // works because the type is any
+
+let ids: number[] = [1, 2, 3, 4,5]
+
+ids.push(‘hello’) // error
+
+let arr: any[] = [1, ‘hi’, true] // works
+
+// Tuples:
+
+let person: [number, string, boolean] = [1, ‘hello’, true] // works
+let person: [number, string, boolean] = [1, 1, 1] // error expects number, string and boolean in that order
+
+// Tuples Array
+
+let employee: [number, string][]
+
+employee = [
+	[1, ‘Brad’],
+	[2, ‘Liakos’],
+	[3, ‘Takis’]
+]
+
+
+// Unions
+let id: string | number = 22 // can either be number or string
+
+// Enums
+enum Direction1 { 	Up,
+	Down,
+	Left,
+	Right
+}
+
+console.log(Direction1.Up) // output: 0
+
+but we can also do
+
+enum Direction1 {
+	Up = 1,
+	Down
+	Left 
+	Right
+}
+
+console.log(Direction1.Up) // output: 1
+console.log(Direction1.Left) // output: 3
+
+// Objects
+const user: {
+	id: number,
+	name: string
+} = {
+	id: 1,
+	name: ‘John’
+}
+
+or
+
+type User = { 	id: number,
+	name: string
+}
+
+const user = {
+	id: 1,
+	name: 'John'
+}
+
+// Type Assertion
+let cid: any = 1
+let customerId = <number>cid
+
+or
+
+let customerId = cid as number
+
+// Functions
+function addNum(x: number, y: number): number {
+	return x + y;
+}
+
+// function with no return value
+function log(message: string | number): void {
+	console.log(message);
+}
+
+// Interfaces
+interface UserInterface {
+	id: number,
+	name: string
+}
+
+const user: UserInterface = { 	id: 1,
+	name: ‘Liakos’
+}
+
+type Point = number | string
+
+const p1: Point = 2 or ‘takis’ // You can’t do that with interface
+
+interface UserInterface {
+	id: number,
+	name: string
+	age: number
+}
+
+const user: UserInterface = { 	id: 1,
+	name: ‘Liakos’
+} // error because we haven’t defined the age
+
+// in order to fix that we can add the question mark before the property of the interface such as:
+
+interface UserInterface {
+	id: number,
+	name: string,
+	age?: number
+}
+
+const user: UserInterface = { 	id: 1,
+	name: ‘Liakos’
+} // works
+
+// We can make properties be read-only and therefore they won’t be able to be assigned
+
+interface UserInterface {
+	readonly id: number,
+	name: string,
+	age?: number
+}
+
+const user: UserInterface = { 	id: 1,
+	name: “Liakos” }
+
+user.id = 5 // error
+
+
+// Interfaces with functions
+
+interface MathFunc { 	(x: number, y: number): number
+}
+
+// same interface different functions
+const add: MathFunc = (x: number, y: number): number => x + y;
+const sub: MathFunc = (x: number, y: number): number => x - y;
+
+// Classes
+
+class Person { 	id: number,
+	name: string
+
+	constructor(id: number, name: string) {
+		this.id = id;
+		this.name = name;
+	}
+}
+
+const liakos = new Person(1, ‘Liakos’);
+liakos.id = 5 // works
+
+// What if we don’t want to allow modifying outside the class ?
+// We can use private which means the variable can be used only within the class
+
+class Person { 	private id: number,
+	name: string
+
+	constructor(id: number, name: string) {
+		this.id = id;
+		this.name = name;
+	}
+}
+
+const liakos = new Person(1, ‘Liakos’);
+liakos.id = 5 // WON’T work
+
+// How can we apply interface in a class ?
+interface PersonInterface { 	id: number,
+	name: string
+	register(): string
+}
+
+class Person: PersonInterface {
+	id: number,
+	name: string
+
+	constructor(id: number, name: string) {
+		this.id = id;
+		this.name = name;
+	}
+
+	register() {
+		return 1 // error because it expects a string
+	}
+}
+
+
+
+// What does protected variable mean ?
+// Protected means that the variable can be used within the class or in any other class that is an extension of the parent class
+
+class Person { 	protected id: number,
+	name: string
+
+	constructor(id: number, name: string) {
+		this.id = id;
+		this.name = name;
+	}
+}
+
+const liakos = new Person(1, ‘Liakos’);
+liakos.id = 5 // WON’T work
+
+// Subclass
+class Employee extends Person { 	position: string
+
+	constructor(id: number, name: string, position: string){
+		super(id, name);
+		this.position = position;
+	}
+}
+
+const emp = new Employee(2, ‘Takis’, ‘Magkas’);
+
+console.log(emp.register()) // works
+console.log(emp.name) // ‘Takis’
+
+// Generics
+function getArray(items: any[]): any[] { 	return new Array().concat(items)
+}
+
+let numArray = getArray([1, 2, 3,4])
+let strArray = getArray([‘takis’, ‘liakos’, ‘mitsos’])
+
+numArray.push(‘hello’) // works because our getArray takes in an array of any and returns any
+
+what if we change the function a little bit:
+
+function getArray<T>(items: T[]): T[] { 	return new Array().concat(items)
+}
+
+let numArray = getArray<number>([1, 2, 3,4])
+let strArray = getArray<number>([‘takis’, ‘liakos’, ‘mitsos’])
+
+numArray.push(‘hello’) // doesn’t work because basically when assigned the numArray not be any type but number
+
+— TypeScript with React —
+
+export interface Props { 	title: string,
+	color?: string }
+
+const Header = (props: Props) => { 	return ( 		<header>
+			<h1 style={{ color: props.color ? props.color : ‘blue’ }}>
+				{props.title}
+			</h1>
+		</header>
+	)
+}
+
+// let’s say we move into a new file with another component
+
+const App = () => { 	return (
+		<div className=“app”>
+			<Header title=“Hello World’ />
+		</div>
+	) } // works just fine
+// but if we passed in the prop title a number it would not work as it’s expecting a string
+// NOTICE: we don’t need to add a color prop since we added the question mark to the interface which again means it’s optional
