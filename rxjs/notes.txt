@@ -181,7 +181,7 @@ const modified = source.pipe(
 	take(3), // it will print only the first 3 emitted values and then complete it
 );
 
-— tap —
+— tap or do —
 
 Tap allows you to trigger side effects from inside the observable pipe. So far we’ve been printing values to the screen by using the callback in the subscribe method but that only gives us access to the value at the end of the pipe.
 
