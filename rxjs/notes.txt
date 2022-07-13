@@ -1,0 +1,452 @@
+RXJS
+
+Observable: It’s like a wrapper for some data that can be subscribed to and then the subscriber will be notified anytime the data changes.
+It’s basically a pipe for data and rxjs provides you tools to modify that data
+
+import { Observable } from ‘rxjs’
+
+// callback function that we can use to notify a subscriber with some new data
+// this can be sync or async but basically every time we call .next it’s like emitting an event to the subscriber that can listen and react to
+const basic = Observable.create(observer => {
+	observer.next(“A”); 
+	observer.next(“B”);
+	observer.next(“C”);
+});
+
+// subscribe takes a function that will be called every time the observable emits a new value
+// basically you’re reacting to changes in the observable data
+basic.subscribe(print); 
+
+// output: A, B, C
+
+// We can use .complete in order to shut off the observable and no longer emit values
+
+const basic = Observable.create(observer => {
+	observer.next(“A”); 
+	observer.next(“B”);
+	observer.complete(); // Done here
+	observer.next(“C”);
+});
+
+// output: A, B
+
+— of —
+
+// To create an observable with a raw value, we use .of
+// This will take the value we pass in and wrap it in an observable
+
+const hello = of(‘hello’);
+hello.subscribe(print);
+
+// output: hello
+
+— from —
+
+// Takes an array, promise or iterable and emits each and individual item from the observable
+
+const world = from(‘world’);
+world.subscribe(print);
+
+// output: w o r l d (imagine each word being printed in a new line )
+
+— fromEvent —
+
+// Create an observable from events in the DOM
+// We first pass the dom element and then the event we want to listen to
+const event = fromEvent(document, ‘click’);
+event.subscribe(print);
+
+// output: We get an event object of mouseEvent every time we click on the page
+
+— interval —
+
+// We can set up an observable based on a time interval
+// It takes the number of milliseconds as its argument and then will emit each time this interval passes
+
+const periodic = interval(1000);
+periodic.subscribe(print);
+
+// output: 0 1 2 3 4 5.. ( each number will be printed after 1000 ms )
+
+— async or sync rxjs —
+
+// Using the asyncScheduler function from the rxjs library we can control that behavior by modifying schedulers
+
+Example:
+
+const hello = of(‘hello’);
+hello.subscribe(print);
+print(‘world’)
+
+// output:
+	hello
+	world
+
+// if we pass in the asyncScheduler it will emit the value of the observable on the next iteration of the event loop
+
+const hello = of(‘hello’, asyncScheduler);
+hello.subscribe(print);
+print(‘world’)
+
+// output:
+	world
+	hello
+
+— Difference between hot & cold (or multi & single) observables —
+Hot observables: multiple subscriptions
+Cold observables: one subscription
+
+Cold observables don’t actually create the underlying value until they’re subscribed to.
+
+const cold = Observable.create(o => o.next(Math.random()));
+cold.subscribe(print);
+cold.subscribe(print);
+
+// output:
+	0.213412341234
+	0.58241283488
+
+Notice that they’re two different numbers, that’s because that create callback function isn’t called until the subscription is created.
+
+We can make that cold observable hot.. (in other words allow it to be broadcast to multiple subscribers)
+
+shareReplay will cache the last value and all subscribers will get the same number
+
+const hot = cold.pipe(shareReplay(1));
+
+hot.subscribe(print);
+hot.subscribe(print);
+
+// output:
+	0.12443523523
+	0.12443523523
+
+
+Most people won’t take cold observables and making them hot, instead they create subjects or behavior subjects.
+
+You can think of a subject as a hot observable but it has the added benefit of being able to have new values pushed to it. You can add more values to the stream after it’s been created
+
+We can call next to add new values to the stream. IMPORTANT: You need to have the subscription setup before you start adding values to it
+
+const subject = new Subject();
+
+subject.subscribe(print);
+
+subject.next(‘Hello’);
+subject.next(‘World’);
+
+subject.subscribe(print); // this will output nothing because it’s subscribed late after the values were already added
+
+// output:
+	Hello
+	World
+
+— Behavior Subject —
+
+It’s similar to the subject except it has the concept of a current value. This means the last emitted value will be cached similar to how we set it up using shareReplay(), but most importantly it also means that every subscription will always receive a value. Even if the last subscription comes in late it will still get the last emitted value in the stream
+
+const bs = new BehaviorSubject(‘Hello’);
+
+bs.subscribe(print);
+
+bs.next(‘World’);
+
+bs.subscribe(print);
+
+// output:
+	Hello
+	World
+	World
+
+Extremely powerful feature when using state management
+
+— Operators — 
+
+Operators help us control the flow of data going through our observables
+
+— from —
+
+const source = from([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+
+// data will flow through this pipe and then be modified by each function or operator in the pipe
+// if we just subscribe to an empty pipe it will just emits the values of 1 through 10
+
+// to take the input and simply transform it to a new output you can use the map operator
+// IMPORTANT: the order of operation matters!
+
+const modified = source.pipe(
+	map(n => n * 2), // outputs the numbers multiplied by 2
+	scan((acc, val) => acc + val), // works like reduce in es6, each emitted value gets added on top of the previous one
+	filter(n => n > 10), // it will print only the numbers that are greater than 10
+	take(3), // it will print only the first 3 emitted values and then complete it
+);
+
+— tap —
+
+Tap allows you to trigger side effects from inside the observable pipe. So far we’ve been printing values to the screen by using the callback in the subscribe method but that only gives us access to the value at the end of the pipe.
+
+const source = of(‘liakos’);
+
+const tapped = source.pipe(
+	tap(print),
+	map(name => name.toUpperCase()),
+	tap(print)
+);
+
+tapped.subscribe();
+
+// output:
+	liakos
+	LIAKOS
+
+
+// We can use tap to trigger more complex side effects for example you might want to save a value from the observable to a back-end database.
+tap(async name => {
+	await Promise.resolve();
+	alert(“done”);
+})
+// So tap basically gives you a context to tap into the observable and do something
+
+— Back Pressure —
+
+Back pressure means when you have an observable that’s emitting way more values than you actually need.
+
+for example:
+
+const event = fromEvent(document, ‘mousemove’);
+
+This will cause the observable to emit multiple events every second!
+
+We do have several operators that can help us with this situtation.
+
+1. debounceTime()
+
+A debounce will filter out all events until they have stopped happening for a certain period of time
+
+const debounced = event.pipe(debounceTime(1000));
+debounced.subscribe();
+
+This is really useful for something like a type-ahead where you don’t wanna make an API call until the user is done typing.
+In the same example with the mousemove event above, what will happen is:
+
+a. we’re using the mouse and nothing happens
+b. we stop using the mouse and after 1 second the event will be printed
+
+
+2. throttleTime()
+
+An alternative to a debounce is a throttle. It will emit the first value but make sure no additional values can be emitted until a certain time period has passed.
+
+const throttled = event.pipe(throttleTime(1000));
+throttled.subscribe(print);
+
+// output:
+	one event emitted per second
+
+
+3. bufferCount()
+
+If we want to keep all the data but just not listen to it all at once we can use a buffer. This will collect all the events into an array and then only emit them when they get to a specific length (the argument passing in that function is the length )
+
+const buffered = event.pipe(bufferCount(20));
+buffered.subscribe(print);
+
+// output:
+	Collects all the events into an array and then only emit them when they get to a length of 20
+
+
+— Switch Map —
+
+This allows you to start with one observable and then switch to another one which is very important when we’re talking about relational data. 
+
+For example let’s say we have an observable of a user logged into our app and then we might want to switch to another observable about that user in the database. 
+
+const user$ = of({ uid: Math.random() });
+
+const fetchOrders = (userId) => {
+	return of(`${userId}’s order data`);
+}
+
+We can do that by creating an observable of an object and then create a function that returns an observable of some information based on a user ID.. we can’t call this function until we have a user id so how do we get the question id out of the observable ?
+
+A naive solution is to use nested subscriptions
+
+let orders;
+
+user$.subscribe(user => {
+	fetchOrders(user.uid).subscribe(data => {
+		orders = data;
+		print(orders);
+	});
+});
+
+That could work but there is a better way. Instead we’ll start with our user observable to compose a new observable called orders, we first add a pipe to the user and then we use the switchMap will give us access to the user id and then we just return an observable from it.. we can also return a promise or an array as well.
+
+const orders$ = user$.pipe(
+	switchMap(user => { 		return fetchOrders(user.uid);
+	})
+);
+
+orders$.subscribe(print);
+
+I believe that we can use switchMap whenever we have one value that depends on another value.
+
+— Combine — 
+
+Functions are: combineLatest, merge
+
+Imagine a case where we have multiple observables that we just want to combine into a single stream.
+
+Since these are not technically operators we need to import them from ‘rxjs’
+
+// Let’s create a cold observable of a random number
+const randomAsync = Observable.create(o => o.next(Math.random()));
+
+const delayed = randomAsync.pipe(delay(100)); // second observable that adds a delay to that random number
+
+const combo = combineLatest([
+	delayed,
+	randomAsync,
+	randomAsync,
+	randomAsync
+])
+
+// combineLatest takes an array of observables and it will wait for each observable to emit a value and then emit everything together as an array
+// Even though the random numbers are going to emit something right away it’s going to wait for that delay to resolve into a value before it emits anything. 
+// Then if any of the observables emit anything after that it will emit everything again as an array
+
+// In other words: it gives you the current state of every observable in this array
+// Initially it’s blank for a second waiting for that delay and then it emits out the four random numbers
+
+// output: 	after 1 sec:
+		0.23141235125125
+		0.3864856943864
+		0.8928345283450
+		0.41251551235123
+
+
+What if we don’t want to wait for that delay ?
+
+We can instead use merge which will just emit each value one by one as it comes through the stream merge. Merge doesn’t care about the array position of the observable it only cares about when it emits it in the context of time.
+
+// output:
+	Immediately:
+		0.123412341234123
+		0.98234523594422
+		0.19283498594234
+	a second later:
+		0.75749298234845
+
+— errors —
+
+How can we catch errors in the context of a stream ?
+
+We can catch the error and then replace it with some other value, we can do this easily with the catchError operator.
+
+const sub = new Subject();
+
+sub.pipe(
+	catchError(err => of(‘something broke, but we handled it!’)),
+)
+
+// It can intercept the error and emit some other default value ( in our case the text ) out of the stream.
+
+// We can also retry things very easily just by adding the retry function
+
+sub.pipe(
+	catchError(err => of(‘something broke, but we handled it!’)),
+	retry(2)
+)
+
+
+IMPORTANT: We obviously need to catch the error
+
+const sub = new Subject();
+
+sub.pipe(
+	
+)
+.subscribe(print);
+
+sub.next(‘ok’);
+sub.error(‘broken’);
+
+// output: 	ok
+// in console: 	Uncaught broken
+
+// If we don’t catch the error we’ll get an uncaught error in the console but by using the catchError operator we can handle it in the background and then 
+// provide some useful information to the user and the front end.
+
+const sub = new Subject();
+
+sub.pipe(
+	catchError(err => of(‘default value goes here’));
+)
+.subscribe(print);
+
+sub.next(‘ok’);
+sub.error(‘broken’);
+
+// output:
+	ok
+	default value goes here
+
+
+— Memory Leaks —
+
+There are two main ways to prevent memory leaks.
+
+1. Unsubscribe from your subscriptions
+
+For example:
+
+const source = interval(100);
+
+cont subscription = source.subscribe(); // it will run forever until we close the subscription
+
+// One potential way to handle this is to create a variable for the subscription and then call subscription.unsubscribe() at some other point in the code
+
+const subscription = source.subscribe(o => {
+	print(o);
+	if (o >= 10) {
+		subscription.unsubscribe(); // this will stop the leak because the observable only emits the first 10 values.
+	}
+})
+
+// output:
+	1
+	2
+	3
+	…
+	10
+
+// There is an even better way we can achieve this
+
+2. Pipe in the takeWhile()
+
+// We can pipe in the takeWhile() operator to the interval itself and that will tell it to emit values only while a certain condition is true, when that condition 
+// becomes false, it will stop emiting values therefore preventing the memory leak and we also don’t need to manually unsubscribe anywhere in our code.
+
+const source = interval(100);
+
+const example = source.pipe(
+	takeWhile(o => o <= 10) );
+
+// output:
+	1
+	2
+	3
+	…
+	10
+
+
+Although, sometimes we want some other observable or subject to be the thing that triggers the subscription to stop. For that we have the takeUntil() operator.
+It takes an observable as its argument and when that observable emits something it will cancel the subscription on the source.
+
+For example: Setting a timer for 2 seconds.
+
+const example2 = source.pipe(
+	takeUntil(timer(2000))
+);
+
+// When the timer finishes it will complete the interval and end the subscription.
