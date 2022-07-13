@@ -271,3 +271,32 @@ const App = () => { 	return (
 	) } // works just fine
 // but if we passed in the prop title a number it would not work as it’s expecting a string
 // NOTICE: we don’t need to add a color prop since we added the question mark to the interface which again means it’s optional
+
+— Literal Types —
+
+const name = ‘takis’ | ‘liakos’ // it only accepts these two strings and nothing else 
+
+— Difference between any and unknown — 
+
+[..] unknown which is the type-safe counterpart of any. Anything is assignable to unknown, but unknown isn't assignable to anything but itself and any without a type assertion or a control flow based narrowing. Likewise, no operations are permitted on an unknown without first asserting or narrowing to a more specific type.
+
+A few examples:
+
+let vAny: any = 10;          // We can assign anything to any
+let vUnknown: unknown =  10; // We can assign anything to unknown just like any 
+
+
+let s1: string = vAny;     // Any is assignable to anything 
+let s2: string = vUnknown; // Invalid; we can't assign vUnknown to any other type (without an explicit assertion)
+
+vAny.method();     // Ok; anything goes with any
+vUnknown.method(); // Not ok; we don't know anything about this variable
+
+
+— Difference between void and never —
+
+never : for typescript function that will never return something, can be always running or throw some error (doesn’t have time to return).
+ 
+void: for Typescript function that will return nothing.
+
+A function that has the explicit return type of never won't allow returning undefined, which is different from a void function which allows returning undefined.
